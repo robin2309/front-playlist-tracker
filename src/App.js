@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 import Playlists from "./components/Playlists";
 import SearchForm from "./components/SearchForm";
@@ -13,6 +14,13 @@ const initialPlaylistsState = {
   error: null,
   data: [],
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+`;
 
 const App = () => {
   const [playlists, setPlaylists] = useState(initialPlaylistsState);
@@ -36,17 +44,10 @@ const App = () => {
   };
 
   return (
-    <div
-      className="app"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-    >
+    <Wrapper>
       <SearchForm onSearch={searchPlasylists} loading={playlists.loading} />
       <Playlists playlistsResult={playlists.data} />
-    </div>
+    </Wrapper>
   );
 };
 

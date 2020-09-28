@@ -120,7 +120,12 @@ const Playlists = ({ playlistsResult }) => {
               .map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.name}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.playlistUrl}
+                  >
                     <TableCell
                       component="th"
                       id={labelId}
