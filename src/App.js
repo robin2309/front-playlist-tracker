@@ -19,7 +19,6 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
 `;
 
 const App = () => {
@@ -38,6 +37,7 @@ const App = () => {
       .then((response) => {
         setPlaylists({
           ...initialPlaylistsState,
+          loading: false,
           data: response.data,
         });
       });

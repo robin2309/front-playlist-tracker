@@ -9,6 +9,35 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import React from "react";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
+import styled from "styled-components";
+
+import Origin from "./Origin";
+
+const StyledTabelRow = styled(TableRow)`
+  && {
+    &:nth-child(even) {
+      background-color: #d0d0d0;
+    }
+  }
+`;
+
+const EmptyWrapper = styled.div`
+  && {
+    display: flex;
+    justify-content: center;
+  }
+`;
+
+const StyledPaper = styled(Paper)`
+  && {
+    padding: 20px;
+    margin: 20px;
+  }
+`;
+
+const Text = styled.p`
+  margin: 0;
+`;
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -43,13 +72,13 @@ const Playlists = ({ playlistsResult }) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
   const headCells = [
+    { id: "origin", numeric: false, disablePadding: false, label: "Origine" },
     { id: "playlist", numeric: false, disablePadding: true, label: "Playlist" },
-    { id: "title", numeric: true, disablePadding: false, label: "Titre" },
-    { id: "artist", numeric: true, disablePadding: false, label: "Artiste" },
-    { id: "album", numeric: true, disablePadding: false, label: "Album" },
+    { id: "title", numeric: false, disablePadding: false, label: "Titre" },
+    { id: "artist", numeric: false, disablePadding: false, label: "Artiste" },
+    { id: "album", numeric: false, disablePadding: false, label: "Album" },
     { id: "position", numeric: true, disablePadding: false, label: "Position" },
     { id: "fans", numeric: true, disablePadding: false, label: "Fans" },
-    { id: "origin", numeric: true, disablePadding: false, label: "Origine" },
   ];
 
   const handleRequestSort = (event, property) => {
@@ -76,11 +105,17 @@ const Playlists = ({ playlistsResult }) => {
     Math.min(rowsPerPage, playlistsResult.length - page * rowsPerPage);
 
   if (playlistsResult.length === 0) {
-    return <p>Aucun résultats</p>;
+    return (
+      <EmptyWrapper>
+        <StyledPaper elevation={1}>
+          <Text>Aucun résultats</Text>
+        </StyledPaper>
+      </EmptyWrapper>
+    );
   }
 
   return (
-    <Paper>
+    <StyledPaper elevation={1}>
       <TableContainer>
         <Table
           aria-labelledby="tableTitle"
@@ -120,19 +155,26 @@ const Playlists = ({ playlistsResult }) => {
               .map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
-                  <TableRow
+                  <StyledTabelRow
                     hover
                     role="checkbox"
                     tabIndex={-1}
                     key={row.playlistUrl}
                   >
+                    <TableCell>
+                      <Origin name={row.origin} />
+                    </TableCell>
                     <TableCell
                       component="th"
                       id={labelId}
                       scope="row"
                       padding="none"
                     >
-                      <a target="_blank" href={row.playlistUrl}>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={row.playlistUrl}
+                      >
                         {row.playlistName}
                       </a>
                     </TableCell>
@@ -143,13 +185,12 @@ const Playlists = ({ playlistsResult }) => {
                     <TableCell align="right">
                       {row.playlistFans ? row.playlistFans : null}
                     </TableCell>
-                    <TableCell align="right">{row.origin}</TableCell>
-                  </TableRow>
+                  </StyledTabelRow>
                 );
               })}
             {emptyRows > 0 && (
               <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={6} />
+                <TableCell colSpan={7} />
               </TableRow>
             )}
           </TableBody>
@@ -164,7 +205,7 @@ const Playlists = ({ playlistsResult }) => {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-    </Paper>
+    </StyledPaper>
   );
 };
 

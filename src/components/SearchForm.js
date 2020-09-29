@@ -3,11 +3,11 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 350px;
   padding: 15px;
   align-items: center;
 `;
@@ -18,7 +18,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const SearchForm = ({ onSearch }) => {
+const SearchForm = ({ onSearch, loading }) => {
   const [artistSearch, setArtist] = useState("");
   const [songSearch, setSong] = useState("");
 
@@ -48,12 +48,12 @@ const SearchForm = ({ onSearch }) => {
       <Button
         color="primary"
         variant="contained"
-        disabled={!artistSearch && !songSearch}
+        disabled={loading || (!artistSearch && !songSearch)}
         onClick={() => {
           onSearch(artistSearch, songSearch);
         }}
       >
-        Rechercher
+        {loading ? <CircularProgress size={20} /> : "Rechercher"}
       </Button>
     </Wrapper>
   );
