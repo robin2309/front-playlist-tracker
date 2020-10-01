@@ -10,6 +10,7 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import Typography from "@material-ui/core/Typography";
 
 import Origin from "./Origin";
 
@@ -35,7 +36,7 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-const Text = styled.p`
+const Text = styled(Typography)`
   margin: 0;
 `;
 
@@ -108,7 +109,7 @@ const Playlists = ({ playlistsResult }) => {
     return (
       <EmptyWrapper>
         <StyledPaper elevation={1}>
-          <Text>Aucun résultats</Text>
+          <Text variant="body1">Aucun résultats</Text>
         </StyledPaper>
       </EmptyWrapper>
     );

@@ -4,6 +4,7 @@ import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
 
 const Wrapper = styled.div`
   display: flex;
@@ -53,7 +54,11 @@ const SearchForm = ({ onSearch, loading }) => {
           onSearch(artistSearch, songSearch);
         }}
       >
-        {loading ? <CircularProgress size={20} /> : "Rechercher"}
+        {loading ? (
+          <CircularProgress size={20} />
+        ) : (
+          <Typography variant="body1">Rechercher</Typography>
+        )}
       </Button>
     </Wrapper>
   );
