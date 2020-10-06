@@ -1,18 +1,49 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+
+import { HOST } from "../config";
+
+const ENDPOINT = "/authentication";
 
 const defaultAuth = {
-  id: null,
-  email: null,
+  authenticated: false,
+  login: () => {},
 };
 
 const AuthContext = React.createContext(defaultAuth);
 
 const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState(defaultAuth);
+  const history = useHistory();
+  const [auth, setAuth] = useState(false);
+  const [isLogging, setIsLogging] = useState(false);
+
+  const loginHandler = (email, password) => {
+    console.log("logging in");
+    setIsLogging(true);
+    axios
+      .post(`${HOST}${ENDPOINT}`, {
+        strategy: "local",
+        email,
+        password,
+      })
+      .then((response) => {
+        console.log(response);
+        setIsLogging(false);
+        setAuth(true);
+        history.push("/search");
+      })
+      .catch((error) => {
+        setIsLogging(false);
+        // TODO: show error
+      });
+  };
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider
+      value={{ authenticated: auth, login: loginHandler, isLogging }}
+    >
       {children}
     </AuthContext.Provider>
   );

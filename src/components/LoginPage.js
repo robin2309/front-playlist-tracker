@@ -1,0 +1,85 @@
+import React, { useContext, useState } from "react";
+import Paper from "@material-ui/core/Paper";
+import styled from "styled-components";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
+import { AuthContext } from "./Auth";
+
+const StyledPaper = styled(Paper)`
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  align-items: center;
+  max-width: 300px
+  margin: 20px;
+`;
+
+const StyledTextField = styled(TextField)`
+  && {
+    margin-bottom: 10px;
+  }
+`;
+
+const Wrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoginPage = () => {
+  const authContext = useContext(AuthContext);
+
+  const [login, setLogin] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onLoginChange = (e) => {
+    setLogin(e.target.value);
+  };
+  const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  return (
+    <Wrapper>
+      <StyledPaper>
+        <Typography>Bienvenue !</Typography>
+        <StyledTextField
+          id="login"
+          name="login"
+          value={login}
+          onChange={onLoginChange}
+          label="Email"
+        />
+        <StyledTextField
+          id="password"
+          name="password"
+          value={password}
+          onChange={onPasswordChange}
+          label="Mot de passe"
+          type="password"
+        />
+        <Button
+          color="primary"
+          variant="contained"
+          disabled={authContext.isLogging || (!login && !password)}
+          onClick={() => {
+            authContext.login(login, password);
+          }}
+        >
+          {authContext.isLogging ? (
+            <CircularProgress size={20} />
+          ) : (
+            <Typography variant="body1">Se connecter</Typography>
+          )}
+        </Button>
+      </StyledPaper>
+    </Wrapper>
+  );
+};
+
+export default LoginPage;
