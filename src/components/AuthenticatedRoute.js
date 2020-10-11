@@ -8,7 +8,9 @@ const AuthenticatedRoute = ({ children, ...otherProps }) => {
   return (
     <Route {...otherProps}>
       <AuthContext.Consumer>
-        {(context) => (context.authenticated ? children : <Redirect to="/" />)}
+        {(context) =>
+          context.isAuthenticated() ? children : <Redirect to="/" />
+        }
       </AuthContext.Consumer>
     </Route>
   );

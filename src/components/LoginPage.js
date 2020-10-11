@@ -9,12 +9,14 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { AuthContext } from "./Auth";
 
 const StyledPaper = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-  padding: 15px;
-  align-items: center;
-  max-width: 300px
-  margin: 20px;
+  && {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    align-items: center;
+    max-width: 300px;
+    margin: 20px;
+  }
 `;
 
 const StyledTextField = styled(TextField)`
@@ -29,6 +31,12 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const Img = styled.img`
+  && {
+    width: 150px;
+  }
 `;
 
 const LoginPage = () => {
@@ -47,7 +55,7 @@ const LoginPage = () => {
   return (
     <Wrapper>
       <StyledPaper>
-        <Typography>Bienvenue !</Typography>
+        <Img src="/logo.png" alt="Logo" />
         <StyledTextField
           id="login"
           name="login"

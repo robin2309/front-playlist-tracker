@@ -8,14 +8,15 @@ import Typography from "@material-ui/core/Typography";
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
   padding: 15px;
   align-items: center;
+  justify-content: center;
 `;
 
 const StyledTextField = styled(TextField)`
   && {
     margin-bottom: 10px;
+    margin-right: 20px;
   }
 `;
 

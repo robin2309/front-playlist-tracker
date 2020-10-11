@@ -11,13 +11,29 @@ import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
+import red from "@material-ui/core/colors/red";
 
 import Origin from "./Origin";
+
+const StyledTableHead = styled(TableHead)`
+  && {
+    background-color: ${red[500]};
+  }
+`;
+
+const StyledHeadCell = styled(TableCell)`
+  && {
+    color: white;
+    & > span {
+      color: white;
+    }
+  }
+`;
 
 const StyledTabelRow = styled(TableRow)`
   && {
     &:nth-child(even) {
-      background-color: #d0d0d0;
+      background-color: ${red[50]};
     }
   }
 `;
@@ -68,7 +84,7 @@ function stableSort(array, comparator) {
 
 const Playlists = ({ playlistsResult }) => {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
+  const [orderBy, setOrderBy] = React.useState("playlist");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(20);
 
@@ -101,6 +117,8 @@ const Playlists = ({ playlistsResult }) => {
     setPage(0);
   };
 
+  // TODO sort
+
   const emptyRows =
     rowsPerPage -
     Math.min(rowsPerPage, playlistsResult.length - page * rowsPerPage);
@@ -123,10 +141,10 @@ const Playlists = ({ playlistsResult }) => {
           size={"small"}
           aria-label="enhanced table"
         >
-          <TableHead>
+          <StyledTableHead>
             <TableRow>
               {headCells.map((headCell) => (
-                <TableCell
+                <StyledHeadCell
                   key={headCell.id}
                   align={headCell.numeric ? "right" : "left"}
                   padding={headCell.disablePadding ? "none" : "default"}
@@ -138,18 +156,11 @@ const Playlists = ({ playlistsResult }) => {
                     onClick={createSortHandler(headCell.id)}
                   >
                     {headCell.label}
-                    {orderBy === headCell.id ? (
-                      <span>
-                        {order === "desc"
-                          ? "sorted descending"
-                          : "sorted ascending"}
-                      </span>
-                    ) : null}
                   </TableSortLabel>
-                </TableCell>
+                </StyledHeadCell>
               ))}
             </TableRow>
-          </TableHead>
+          </StyledTableHead>
           <TableBody>
             {stableSort(playlistsResult, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -160,7 +171,7 @@ const Playlists = ({ playlistsResult }) => {
                     hover
                     role="checkbox"
                     tabIndex={-1}
-                    key={row.playlistUrl}
+                    key={`${row.playlistUrl}-${index}`}
                   >
                     <TableCell>
                       <Origin name={row.origin} />
@@ -182,7 +193,19 @@ const Playlists = ({ playlistsResult }) => {
                     <TableCell align="right">{row.name}</TableCell>
                     <TableCell align="right">{row.artists}</TableCell>
                     <TableCell align="right">{row.album}</TableCell>
-                    <TableCell align="right">{row.position}</TableCell>
+                    <TableCell align="right">
+                      {row.position.split("/").map((pos, index) =>
+                        index === 0 ? (
+                          <span>
+                            <b>{`${pos} `}</b>
+                          </span>
+                        ) : (
+                          <>
+                            / <span>{pos}</span>
+                          </>
+                        )
+                      )}
+                    </TableCell>
                     <TableCell align="right">
                       {row.playlistFans ? row.playlistFans : null}
                     </TableCell>

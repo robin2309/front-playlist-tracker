@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
+import { AuthContext } from "./Auth";
 import Menu from "./Menu";
 import Playlists from "./Playlists";
 import SearchForm from "./SearchForm";
@@ -23,6 +24,8 @@ const Wrapper = styled.div`
 `;
 
 const App = () => {
+  const authContext = useContext(AuthContext);
+
   const [playlists, setPlaylists] = useState(initialPlaylistsState);
   const searchPlasylists = (artist, song) => {
     setPlaylists({
@@ -33,6 +36,9 @@ const App = () => {
       .get(`${HOST}${ENDPOINT}`, {
         params: {
           ...(song ? { song } : { artist }),
+        },
+        headers: {
+          Authorization: `Bearer ${authContext.getAuth()}`,
         },
       })
       .then((response) => {
