@@ -1,4 +1,5 @@
 import AppBar from "@material-ui/core/AppBar";
+import Typography from "@material-ui/core/Typography";
 import React, { useContext } from "react";
 import styled from "styled-components";
 import grey from "@material-ui/core/colors/grey";
@@ -10,7 +11,7 @@ import { AuthContext } from "./Auth";
 const StyledAppBar = styled(AppBar)`
   && {
     padding: 10px;
-    background-color: ${grey[500]};
+    background-color: ${grey[800]};
     justify-content: space-between;
     flex-direction: row;
   }
@@ -35,6 +36,9 @@ const Menu = () => {
   return (
     <StyledAppBar>
       <Img src="/logo.png" alt="Jo&co" />
+        <Typography variant="h6" color="inherit">
+            Jo & Co - Playlist Radar
+        </Typography>
       <LogoutIcon
         aria-label="logout"
         color="inherit"
