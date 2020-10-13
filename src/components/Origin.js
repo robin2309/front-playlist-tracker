@@ -22,7 +22,7 @@ const Img = styled.img`
   }
 `;
 
-const Origin = ({ name }) => <Img src={getImage(name)} alt="Origine" />;
+const Origin = ({ name }) => <Img src={getImage(name)} alt={name} />;
 
 Origin.propTypes = {
   name: PropTypes.string.isRequired,

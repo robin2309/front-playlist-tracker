@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import grey from "@material-ui/core/colors/grey";
 
 import { AuthContext } from "./Auth";
 
@@ -12,10 +13,11 @@ const StyledPaper = styled(Paper)`
   && {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+    padding: 20px;
     align-items: center;
     max-width: 300px;
-    margin: 20px;
+    margin: 30px;
+    background-color: ${grey[100]};
   }
 `;
 
@@ -35,7 +37,7 @@ const Wrapper = styled.div`
 
 const Img = styled.img`
   && {
-    width: 150px;
+    width: 200px;
   }
 `;
 
