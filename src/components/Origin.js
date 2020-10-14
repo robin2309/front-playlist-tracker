@@ -18,7 +18,7 @@ const getImage = (name) => {
 const Img = styled.img`
   && {
     max-width: 50px;
-    max-height: 50px;
+    max-height: 30px;
   }
 `;
 

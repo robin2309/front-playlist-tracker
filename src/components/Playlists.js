@@ -56,11 +56,38 @@ const Text = styled(Typography)`
   margin: 0;
 `;
 
+const headCells = [
+  { id: "origin", numeric: false, disablePadding: false, label: "Origine" },
+  {
+    id: "playlistName",
+    numeric: false,
+    disablePadding: true,
+    label: "Playlist",
+  },
+  { id: "name", numeric: false, disablePadding: false, label: "Titre" },
+  {
+    id: "artists",
+    numeric: false,
+    isArray: true,
+    disablePadding: false,
+    label: "Artiste",
+  },
+  { id: "album", numeric: false, disablePadding: false, label: "Album" },
+  { id: "position", numeric: true, disablePadding: false, label: "Position" },
+  { id: "playlistFans", numeric: true, disablePadding: false, label: "Fans" },
+];
+
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
+  const aValue = headCells.find(({ id }) => id === orderBy).isArray
+    ? a[orderBy].join()
+    : a[orderBy];
+  const bValue = headCells.find(({ id }) => id === orderBy).isArray
+    ? b[orderBy].join()
+    : b[orderBy];
+  if (bValue < aValue) {
     return -1;
   }
-  if (b[orderBy] > a[orderBy]) {
+  if (bValue > aValue) {
     return 1;
   }
   return 0;
@@ -84,19 +111,9 @@ function stableSort(array, comparator) {
 
 const Playlists = ({ playlistsResult }) => {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("playlist");
+  const [orderBy, setOrderBy] = React.useState("playlistName");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(20);
-
-  const headCells = [
-    { id: "origin", numeric: false, disablePadding: false, label: "Origine" },
-    { id: "playlist", numeric: false, disablePadding: true, label: "Playlist" },
-    { id: "title", numeric: false, disablePadding: false, label: "Titre" },
-    { id: "artist", numeric: false, disablePadding: false, label: "Artiste" },
-    { id: "album", numeric: false, disablePadding: false, label: "Album" },
-    { id: "position", numeric: true, disablePadding: false, label: "Position" },
-    { id: "fans", numeric: true, disablePadding: false, label: "Fans" },
-  ];
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -116,8 +133,6 @@ const Playlists = ({ playlistsResult }) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  // TODO sort
 
   const emptyRows =
     rowsPerPage -
@@ -181,6 +196,7 @@ const Playlists = ({ playlistsResult }) => {
                       id={labelId}
                       scope="row"
                       padding="none"
+                      align="left"
                     >
                       <a
                         target="_blank"
@@ -190,9 +206,9 @@ const Playlists = ({ playlistsResult }) => {
                         {row.playlistName}
                       </a>
                     </TableCell>
-                    <TableCell align="right">{row.name}</TableCell>
-                    <TableCell align="right">{row.artists}</TableCell>
-                    <TableCell align="right">{row.album}</TableCell>
+                    <TableCell align="left">{row.name}</TableCell>
+                    <TableCell align="left">{row.artists}</TableCell>
+                    <TableCell align="left">{row.album}</TableCell>
                     <TableCell align="right">
                       {row.position.split("/").map((pos, index) =>
                         index === 0 ? (
