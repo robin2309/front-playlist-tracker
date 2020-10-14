@@ -55,7 +55,7 @@ const App = () => {
       <Menu />
       <Wrapper>
         <SearchForm onSearch={searchPlasylists} loading={playlists.loading} />
-        <Playlists playlistsResult={playlists.data} />
+        <Playlists playlistsResult={playlists.data} loading={playlists.loading} />
       </Wrapper>
     </>
   );

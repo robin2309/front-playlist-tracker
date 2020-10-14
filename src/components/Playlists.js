@@ -6,6 +6,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import React from "react";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from "prop-types";
@@ -47,8 +48,9 @@ const EmptyWrapper = styled.div`
 
 const StyledPaper = styled(Paper)`
   && {
-    padding: 20px;
-    margin: 20px;
+    padding: 10px;
+    margin: 10px;
+    background-color: ghostwhite;
   }
 `;
 
@@ -109,11 +111,11 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const Playlists = ({ playlistsResult }) => {
+const Playlists = ({ playlistsResult, loading }) => {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("playlistName");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(20);
+  const [rowsPerPage, setRowsPerPage] = React.useState(30);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -138,6 +140,14 @@ const Playlists = ({ playlistsResult }) => {
     rowsPerPage -
     Math.min(rowsPerPage, playlistsResult.length - page * rowsPerPage);
 
+  if (loading) {
+    return (
+      <EmptyWrapper>
+        <CircularProgress />
+      </EmptyWrapper>
+    );
+  }
+
   if (playlistsResult.length === 0) {
     return (
       <EmptyWrapper>
@@ -149,7 +159,16 @@ const Playlists = ({ playlistsResult }) => {
   }
 
   return (
-    <StyledPaper elevation={1}>
+    <StyledPaper elevation={3}>
+      <TablePagination
+        rowsPerPageOptions={[10, 20, 30, 50]}
+        component="div"
+        count={playlistsResult.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
       <TableContainer>
         <Table
           aria-labelledby="tableTitle"
@@ -228,29 +247,21 @@ const Playlists = ({ playlistsResult }) => {
                   </StyledTabelRow>
                 );
               })}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 33 * emptyRows }}>
-                <TableCell colSpan={7} />
-              </TableRow>
-            )}
+            {/*{emptyRows > 0 && (*/}
+            {/*  <TableRow style={{ height: 33 * emptyRows }}>*/}
+            {/*    <TableCell colSpan={7} />*/}
+            {/*  </TableRow>*/}
+            {/*)}*/}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 20, 25]}
-        component="div"
-        count={playlistsResult.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
     </StyledPaper>
   );
 };
 
 Playlists.propTypes = {
   playlistsResult: PropTypes.array.isRequired,
+  loading: PropTypes.bool,
 };
 
 export default Playlists;
