@@ -1,6 +1,7 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 
+import PublicRoute from "./components/PublicRoute";
 import LoginPage from "./components/LoginPage";
 import AuthenticatedRoute from "./components/AuthenticatedRoute";
 import PlaylistPage from "./components/PlaylistPage";
@@ -11,9 +12,9 @@ const App = () => {
       <AuthenticatedRoute path="/search">
         <PlaylistPage />
       </AuthenticatedRoute>
-      <Route path="/">
+      <PublicRoute path="/">
         <LoginPage />
-      </Route>
+      </PublicRoute>
     </Switch>
   );
 };

@@ -28,7 +28,6 @@ const AuthProvider = ({ children }) => {
   const [isLogging, setIsLogging] = useState(false);
 
   const loginHandler = (email, password) => {
-    console.log("logging in");
     setIsLogging(true);
     axios
       .post(`${HOST}${ENDPOINT}`, {
@@ -37,7 +36,6 @@ const AuthProvider = ({ children }) => {
         password,
       })
       .then((response) => {
-        console.log(response);
         setIsLogging(false);
         localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
         history.push("/search");

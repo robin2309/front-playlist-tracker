@@ -47,6 +47,11 @@ const App = () => {
           loading: false,
           data: response.data,
         });
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          authContext.logout();
+        }
       });
   };
 
@@ -55,7 +60,10 @@ const App = () => {
       <Menu />
       <Wrapper>
         <SearchForm onSearch={searchPlasylists} loading={playlists.loading} />
-        <Playlists playlistsResult={playlists.data} loading={playlists.loading} />
+        <Playlists
+          playlistsResult={playlists.data}
+          loading={playlists.loading}
+        />
       </Wrapper>
     </>
   );
