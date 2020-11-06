@@ -50,7 +50,7 @@ const StyledPaper = styled(Paper)`
   && {
     padding: 10px;
     margin: 10px;
-    background-color: ghostwhite;
+    background-color : ghostwhite;
   }
 `;
 
@@ -58,38 +58,11 @@ const Text = styled(Typography)`
   margin: 0;
 `;
 
-const headCells = [
-  { id: "origin", numeric: false, disablePadding: false, label: "Origine" },
-  {
-    id: "playlistName",
-    numeric: false,
-    disablePadding: true,
-    label: "Playlist",
-  },
-  { id: "name", numeric: false, disablePadding: false, label: "Titre" },
-  {
-    id: "artists",
-    numeric: false,
-    isArray: true,
-    disablePadding: false,
-    label: "Artiste",
-  },
-  { id: "album", numeric: false, disablePadding: false, label: "Album" },
-  { id: "position", numeric: true, disablePadding: false, label: "Position" },
-  { id: "playlistFans", numeric: true, disablePadding: false, label: "Fans" },
-];
-
 function descendingComparator(a, b, orderBy) {
-  const aValue = headCells.find(({ id }) => id === orderBy).isArray
-    ? a[orderBy].join()
-    : a[orderBy];
-  const bValue = headCells.find(({ id }) => id === orderBy).isArray
-    ? b[orderBy].join()
-    : b[orderBy];
-  if (bValue < aValue) {
+  if (b[orderBy] < a[orderBy]) {
     return -1;
   }
-  if (bValue > aValue) {
+  if (b[orderBy] > a[orderBy]) {
     return 1;
   }
   return 0;
@@ -113,9 +86,19 @@ function stableSort(array, comparator) {
 
 const Playlists = ({ playlistsResult, loading }) => {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("playlistName");
+  const [orderBy, setOrderBy] = React.useState("playlist");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(30);
+
+  const headCells = [
+    { id: "origin", numeric: false, disablePadding: false, label: "Origine" },
+    { id: "playlist", numeric: false, disablePadding: true, label: "Playlist" },
+    { id: "title", numeric: false, disablePadding: false, label: "Titre" },
+    { id: "artist", numeric: false, disablePadding: false, label: "Artiste" },
+    { id: "album", numeric: false, disablePadding: false, label: "Album" },
+    { id: "position", numeric: true, disablePadding: false, label: "Position" },
+    { id: "fans", numeric: true, disablePadding: false, label: "Fans" },
+  ];
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -136,16 +119,15 @@ const Playlists = ({ playlistsResult, loading }) => {
     setPage(0);
   };
 
-  const emptyRows =
-    rowsPerPage -
-    Math.min(rowsPerPage, playlistsResult.length - page * rowsPerPage);
+  // TODO sort
+  //const emptyRows = rowsPerPage - Math.min(rowsPerPage, playlistsResult.length - page * rowsPerPage);
 
-  if (loading) {
-    return (
-      <EmptyWrapper>
-        <CircularProgress />
-      </EmptyWrapper>
-    );
+  if(loading){
+    return(
+        <EmptyWrapper>
+            <CircularProgress />
+        </EmptyWrapper>
+    )
   }
 
   if (playlistsResult.length === 0) {
@@ -161,13 +143,13 @@ const Playlists = ({ playlistsResult, loading }) => {
   return (
     <StyledPaper elevation={3}>
       <TablePagination
-        rowsPerPageOptions={[10, 20, 30, 50]}
-        component="div"
-        count={playlistsResult.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+          rowsPerPageOptions={[10, 20, 30, 50]}
+          component="div"
+          count={playlistsResult.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
       />
       <TableContainer>
         <Table
@@ -215,7 +197,6 @@ const Playlists = ({ playlistsResult, loading }) => {
                       id={labelId}
                       scope="row"
                       padding="none"
-                      align="left"
                     >
                       <a
                         target="_blank"
@@ -225,9 +206,9 @@ const Playlists = ({ playlistsResult, loading }) => {
                         {row.playlistName}
                       </a>
                     </TableCell>
-                    <TableCell align="left">{row.name}</TableCell>
-                    <TableCell align="left">{row.artists}</TableCell>
-                    <TableCell align="left">{row.album}</TableCell>
+                    <TableCell align="right">{row.name}</TableCell>
+                    <TableCell align="right">{row.artists}</TableCell>
+                    <TableCell align="right">{row.album}</TableCell>
                     <TableCell align="right">
                       {row.position.split("/").map((pos, index) =>
                         index === 0 ? (
@@ -261,7 +242,7 @@ const Playlists = ({ playlistsResult, loading }) => {
 
 Playlists.propTypes = {
   playlistsResult: PropTypes.array.isRequired,
-  loading: PropTypes.bool,
+  loading: PropTypes.bool
 };
 
 export default Playlists;
