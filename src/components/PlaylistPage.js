@@ -9,6 +9,7 @@ import SearchForm from "./SearchForm";
 import { HOST } from "../config";
 
 const ENDPOINT = "/tracker";
+const queryString = require('query-string');
 
 const initialPlaylistsState = {
   loading: false,
@@ -32,11 +33,14 @@ const App = () => {
       ...playlists,
       loading: true,
     });
+
+    let params = [];
+    if(song) params.song = song;
+    if(artist) params.artist = artist;
+    params = queryString.stringify(params);
+    
     axios
-      .get(`${HOST}${ENDPOINT}`, {
-        params: {
-          ...(song ? { song } : { artist }),
-        },
+      .get(`${HOST}${ENDPOINT}?${params}`, {
         headers: {
           Authorization: `Bearer ${authContext.getAuth()}`,
         },

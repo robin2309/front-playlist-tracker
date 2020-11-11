@@ -44,7 +44,7 @@ const Img = styled.img`
 const LoginPage = () => {
   const authContext = useContext(AuthContext);
 
-  const [login, setLogin] = useState("");
+  const [login, setLogin] = useState("lpiquee@joandco.fr");
   const [password, setPassword] = useState("");
 
   const onLoginChange = (e) => {
@@ -64,6 +64,7 @@ const LoginPage = () => {
           value={login}
           onChange={onLoginChange}
           label="Email"
+          type="hidden"
         />
         <StyledTextField
           id="password"
